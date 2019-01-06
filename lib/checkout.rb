@@ -23,6 +23,6 @@ class Checkout
   end
 
   def total
-    "%.2f€" % @line_items.values.map(&:total_price).reduce(:+)
+    "%.2f€" % @line_items.values.sum(&:total_price)
   end
 end
