@@ -1,21 +1,14 @@
-require_relative 'line_item'
-
 class Checkout
   def initialize(pricing_rules)
-    @line_items = Hash.new
+    @line_items = {}
 
-    pricing_rules.each do |rule|
-      li = LineItem.new
-      li.code = rule["code"]
-      li.quantity = 0
-      li.price = rule["price"].gsub(/[^\d\.]/, '').to_f
-      li.discount_bulk = rule["discount_bulk"] === "true"
-      li.discount_bulk_price = rule["discount_bulk_price"].gsub(/[^\d\.]/, '').to_f
-      li.discount_bulk_minimum_quantity = rule["discount_bulk_minimum_quantity"].to_i
-      li.discount_two_for_one = rule["discount_2for1"] === "true"
-
-      @line_items[li.code] = li
+    Struct.new('LineItem', :pricing_rule, :quantity) do
+      def total
+        pricing_rule.price_for quantity
+      end
     end
+
+    pricing_rules.each { |r| @line_items[r.code] = Struct::LineItem.new(r, 0) }
   end
 
   def scan(code)
@@ -23,6 +16,6 @@ class Checkout
   end
 
   def total
-    "%.2f€" % @line_items.values.sum(&:total_price)
+    "%.2f€" % @line_items.values.sum(&:total)
   end
 end
