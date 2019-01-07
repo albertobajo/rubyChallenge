@@ -1,3 +1,4 @@
+# @author Alberto Bajo
 class PricingRule
   attr_accessor(
     :code,
@@ -11,7 +12,6 @@ class PricingRule
 
   def initialize(args = {})
     args.each do |attr_name, attr_value|
-      # Using public_send we ensure that only defined attributes are initialized
       public_send("#{attr_name}=", attr_value)
     end
   end
