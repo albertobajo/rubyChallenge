@@ -69,10 +69,12 @@
   <dl>
     <dt>Inherits:</dt>
     <dd>
-      <span class="inheritName">Object</span>
+      <span class="inheritName">SimpleDelegator</span>
       
         <ul class="fullTree">
           <li>Object</li>
+          
+            <li class="next">SimpleDelegator</li>
           
             <li class="next">PricingLine</li>
           
@@ -84,11 +86,6 @@
   
 
   
-  
-  <dl>
-      <dt>Extended by:</dt>
-      <dd>Forwardable</dd>
-  </dl>
   
   
   
@@ -104,7 +101,35 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>PricingRule decorator, adds quantity attribute and total method. Represents
+a single line in the shopping cart.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Author:</p>
+<ul class="author">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>Alberto Bajo</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 
 
 
@@ -195,7 +220,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Calculates de price for a given number of items applying pricing rule.</p>
+<p>Calculates the total line item price for quantity.</p>
 </div></span>
   
 </li>
@@ -240,7 +265,7 @@
       
         &mdash;
         <div class='inline'>
-<p>to be applied.</p>
+<p>.</p>
 </div>
       
     </li>
@@ -272,15 +297,19 @@
       <pre class="lines">
 
 
-24
-25
-26</pre>
+10
+11
+12
+13
+14</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/pricing_line.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/pricing_line.rb', line 10</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_pricing_rule'>pricing_rule</span><span class='comma'>,</span> <span class='id identifier rubyid_quantity'>quantity</span> <span class='op'>=</span> <span class='int'>0</span><span class='rparen'>)</span>
-  <span class='ivar'>@pricing_rule</span><span class='comma'>,</span> <span class='ivar'>@quantity</span> <span class='op'>=</span> <span class='id identifier rubyid_pricing_rule'>pricing_rule</span><span class='comma'>,</span> <span class='id identifier rubyid_quantity'>quantity</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_pricing_rule'>pricing_rule</span><span class='rparen'>)</span>
+
+  <span class='ivar'>@quantity</span> <span class='op'>=</span> <span class='id identifier rubyid_quantity'>quantity</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -320,12 +349,12 @@
       <pre class="lines">
 
 
-10
-11
-12</pre>
+6
+7
+8</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/pricing_line.rb', line 10</span>
+      <pre class="code"><span class="info file"># File 'lib/pricing_line.rb', line 6</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_quantity'>quantity</span>
   <span class='ivar'>@quantity</span>
@@ -354,7 +383,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Calculates de price for a given number of items applying pricing rule.</p>
+<p>Calculates the total line item price for quantity.</p>
 
 
   </div>
@@ -379,19 +408,6 @@
     </li>
   
 </ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>TypeError</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
 
 </div><table class="source_code">
   <tr>
@@ -399,37 +415,15 @@
       <pre class="lines">
 
 
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43</pre>
+18
+19
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/pricing_line.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'lib/pricing_line.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_total'>total</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>TypeError</span> <span class='kw'>unless</span> <span class='id identifier rubyid_price'>price</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Float</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>TypeError</span> <span class='kw'>unless</span>
-    <span class='id identifier rubyid_discount_bulk_price'>discount_bulk_price</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='kw'>or</span> <span class='id identifier rubyid_discount_bulk_price'>discount_bulk_price</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Float</span>
-
-  <span class='kw'>if</span> <span class='id identifier rubyid_discount_two_for_one'>discount_two_for_one</span>
-    <span class='id identifier rubyid_chargeable_items'>chargeable_items</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_quantity'>quantity</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span> <span class='op'>/</span> <span class='int'>2</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_ceil'>ceil</span>
-    <span class='id identifier rubyid_chargeable_items'>chargeable_items</span> <span class='op'>*</span> <span class='id identifier rubyid_price'>price</span>
-  <span class='kw'>elsif</span> <span class='id identifier rubyid_discount_bulk'>discount_bulk</span> <span class='kw'>and</span> <span class='id identifier rubyid_quantity'>quantity</span> <span class='op'>&gt;=</span> <span class='id identifier rubyid_discount_bulk_minimum_quantity'>discount_bulk_minimum_quantity</span>
-    <span class='id identifier rubyid_quantity'>quantity</span> <span class='op'>*</span> <span class='id identifier rubyid_discount_bulk_price'>discount_bulk_price</span>
-  <span class='kw'>else</span>
-    <span class='id identifier rubyid_quantity'>quantity</span> <span class='op'>*</span> <span class='id identifier rubyid_price'>price</span>
-  <span class='kw'>end</span>
+  <span class='id identifier rubyid_calculate'>calculate</span><span class='lparen'>(</span><span class='id identifier rubyid_quantity'>quantity</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -441,7 +435,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Jan  8 11:33:46 2019 by
+  Generated on Tue Jan  8 13:31:56 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.16 (ruby-2.5.1).
 </div>

@@ -2,7 +2,8 @@
 
 require_relative('pricing_line')
 
-# TODO: yardoc
+# Stores scanned items and calculates total price of checkout processes in the Cabify's physical
+# store.
 class Checkout
   # Returns a new instance of Checkout and initializes a hash of PricingLine objects
   #
