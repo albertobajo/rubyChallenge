@@ -1,4 +1,4 @@
-require_relative '../lib/pricing_rule'
+require 'cabify_store/pricing_rule'
 
 describe PricingRule do
   let(:quantity) { 3 }

@@ -1,2 +1,2 @@
-require_relative '../../lib/checkout'
-require_relative '../../lib/pricing_rule'
+require 'cabify_store/checkout'
+require 'cabify_store/pricing_rule'

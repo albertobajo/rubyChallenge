@@ -1,5 +1,5 @@
-require_relative '../lib/pricing_rule'
-require_relative '../lib/pricing_line'
+require 'cabify_store/pricing_rule'
+require 'cabify_store/pricing_line'
 
 describe PricingLine do
   let(:quantity) { 3 }

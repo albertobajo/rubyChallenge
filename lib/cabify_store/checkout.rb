@@ -1,7 +1,7 @@
+require 'cabify_store/pricing_line'
+
 # @author Alberto Bajo
-
-require_relative('pricing_line')
-
+#
 # Stores scanned items and calculates total price of checkout processes in the Cabify's physical
 # store.
 class Checkout
