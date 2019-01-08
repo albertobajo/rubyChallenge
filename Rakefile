@@ -18,6 +18,6 @@ task :default => :test
 
 task :test => [:spec, :features]
 
-task :console do
-  ruby "bin/run.rb"
+task :prompt do
+  ruby "-Ilib scripts/prompt.rb"
 end
