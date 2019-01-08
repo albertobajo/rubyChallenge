@@ -22,7 +22,7 @@ describe PricingLine do
   it { expect(@pricing_line).to respond_to(:total) }
 
   describe 'total' do
-    it 'should be equal to calculate for given quantity' do
+    it 'should be equal to calculate call for given quantity' do
       expect(@pricing_line.total).to eq(@pricing_line.calculate(quantity))
     end
   end
