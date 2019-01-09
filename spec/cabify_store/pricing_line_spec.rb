@@ -1,6 +1,3 @@
-require 'cabify_store/pricing_rule'
-require 'cabify_store/pricing_line'
-
 describe PricingLine do
   let(:quantity) { 3 }
 
@@ -15,7 +12,7 @@ describe PricingLine do
       discount_bulk_price: nil
     )
 
-    @pricing_line = PricingLine.new(@rule, quantity)
+    @pricing_line = described_class.new(@rule, quantity)
   end
 
   it { expect(@pricing_line).to respond_to(:quantity) }

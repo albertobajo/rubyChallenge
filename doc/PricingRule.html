@@ -102,8 +102,7 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Stores pricing rule attributes and allow to check its rule logic through
-`calculate(quantity)` method.</p>
+<p>Pricing rules for each product, including discounts to apply.</p>
 
 
   </div>
@@ -535,6 +534,7 @@ minimum set at discount_bulk_minimum_quantity</p>
       <pre class="lines">
 
 
+24
 25
 26
 27
@@ -548,11 +548,10 @@ minimum set at discount_bulk_minimum_quantity</p>
 35
 36
 37
-38
-39</pre>
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>code:</span><span class='comma'>,</span>
                <span class='label'>name:</span><span class='comma'>,</span>
@@ -607,12 +606,12 @@ minimum set at discount_bulk_minimum_quantity</p>
       <pre class="lines">
 
 
+5
 6
-7
-8</pre>
+7</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 5</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_code'>code</span>
   <span class='ivar'>@code</span>
@@ -650,12 +649,12 @@ minimum set at discount_bulk_minimum_quantity</p>
       <pre class="lines">
 
 
+5
 6
-7
-8</pre>
+7</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 5</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_discount_bulk'>discount_bulk</span>
   <span class='ivar'>@discount_bulk</span>
@@ -693,12 +692,12 @@ minimum set at discount_bulk_minimum_quantity</p>
       <pre class="lines">
 
 
+5
 6
-7
-8</pre>
+7</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 5</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_discount_bulk_minimum_quantity'>discount_bulk_minimum_quantity</span>
   <span class='ivar'>@discount_bulk_minimum_quantity</span>
@@ -736,12 +735,12 @@ minimum set at discount_bulk_minimum_quantity</p>
       <pre class="lines">
 
 
+5
 6
-7
-8</pre>
+7</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 5</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_discount_bulk_price'>discount_bulk_price</span>
   <span class='ivar'>@discount_bulk_price</span>
@@ -779,12 +778,12 @@ minimum set at discount_bulk_minimum_quantity</p>
       <pre class="lines">
 
 
+5
 6
-7
-8</pre>
+7</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 5</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_discount_two_for_one'>discount_two_for_one</span>
   <span class='ivar'>@discount_two_for_one</span>
@@ -822,12 +821,12 @@ minimum set at discount_bulk_minimum_quantity</p>
       <pre class="lines">
 
 
+5
 6
-7
-8</pre>
+7</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 5</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_name'>name</span>
   <span class='ivar'>@name</span>
@@ -865,12 +864,12 @@ minimum set at discount_bulk_minimum_quantity</p>
       <pre class="lines">
 
 
+5
 6
-7
-8</pre>
+7</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 5</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_price'>price</span>
   <span class='ivar'>@price</span>
@@ -959,6 +958,7 @@ minimum set at discount_bulk_minimum_quantity</p>
       <pre class="lines">
 
 
+45
 46
 47
 48
@@ -971,11 +971,10 @@ minimum set at discount_bulk_minimum_quantity</p>
 55
 56
 57
-58
-59</pre>
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'lib/cabify_store/pricing_rule.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_calculate'>calculate</span><span class='lparen'>(</span><span class='id identifier rubyid_quantity'>quantity</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>TypeError</span> <span class='kw'>unless</span> <span class='id identifier rubyid_price'>price</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Float</span>
@@ -1001,7 +1000,7 @@ minimum set at discount_bulk_minimum_quantity</p>
 </div>
 
       <div id="footer">
-  Generated on Wed Jan  9 17:31:54 2019 by
+  Generated on Wed Jan  9 20:01:09 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.16 (ruby-2.5.1).
 </div>

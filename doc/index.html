@@ -73,27 +73,28 @@ href="https://github.com/cabify/rubyChallenge">cabify/rubyChallenge</a></p>
 
 <h3 id="label-Description">Description</h3>
 
-<p>There are three classes <code>Checkout</code>, <code>PricingRules</code>
-and <code>PricingLine</code> grouped under <code>CabifyStore</code> module.</p>
+<p>There are three classes grouped under <code>CabifyStore</code> module:
+<code>Checkout</code>, <code>PricingRule</code> and
+<code>PricingLine</code>.</p>
 
 <h4 id="label-PricingRule">PricingRule</h4>
 
-<p>Stores pricing rule attributes and allow to check its rule logic through
+<p>Stores pricing rule attributes and allow to check the rule logic through
 <code>calculate(quantity)</code> method.</p>
 
 <h4 id="label-PricingLine">PricingLine</h4>
 
 <p>Decorator for <code>PricingRule</code>, adds a <code>quantity</code>
 attribute and <code>total</code> method that uses
-<code>calculate(quantity)</code> of the decorated object to get the final
+<code>calculate(quantity)</code> from the decorated object to get the final
 price of the line item.</p>
 
 <h4 id="label-Checkout">Checkout</h4>
 
-<p>Main class of the process, its objects are initialized with an list of
-<code>PricingRule</code> objects that are decorated with
-<code>PricingLine</code> and assigned to a <code>Hash</code> which keys are
-the <code>code</code> attribute of the <code>PricingRule</code>.</p>
+<p>Is initialized with a list of <code>PricingRule</code> objects, which are
+decorated with <code>PricingLine</code> and assigned to a <code>Hash</code>
+(which keys are the <code>code</code> attribute of the
+<code>PricingRule</code>).</p>
 
 <p>After an item is scanned, <code>PricingLine</code> is retrieved from the
 <code>Hash</code> and its quantity incremented by one.</p>
@@ -103,25 +104,36 @@ the <code>code</code> attribute of the <code>PricingRule</code>.</p>
 
 <p>See <a href="#documentation">documentation</a> for more details.</p>
 
-<h3 id="label-Explanation">Explanation</h3>
-
+<h3 id="label-Notes">Notes</h3>
+<ul><li>
 <p>Because there is not a particular <code>PricingRule</code> definition in
-the challenge statement, I have tried to keep it as simple as possible.
-Taking this into account, the decission of modelling
-<code>PricingRule</code> as a <code>Class</code> instead a
-<code>Hash</code>, <code>Struct</code>, etc., its based on:</p>
+the challenge statement, I have tried to keep it as simple as possible.</p>
+</li><li>
+<p>The decission of modelling <code>PricingRule</code> as a <code>Class</code>
+instead a <code>Hash</code>, <code>Struct</code>, etc., its based on:</p>
 <ul><li>
 <p>Less effort to make it a database backed model if needed.</p>
 </li><li>
 <p>It is the most suitable place to implement the price calculation logic.</p>
 </li></ul>
-
-<p>But for the checkout process, it is necessary an object for keeping count
-of the number and type of the items scanned. And the simplest way that has
-occurred to me is wrapping <code>PricingRule</code> with a decorator.</p>
-
-<p>Database backed model As isolated as possible Not limiting the
-functionality =&gt; calculate(quantity)</p>
+</li><li>
+<p><code>PricingRule</code> do not need the attribute
+<code>discount_bulk</code>, I could have supposed that if there were a
+discount_bulk_price the discount should be enabled. But having this
+attribute allows to enable/disable the discount in a more comfortable way.</p>
+</li><li>
+<p>For the checkout process, we need an object for keeping count of the number
+and type of the items scanned, and the simplest way that has occurred to me
+is wrapping <code>PricingRule</code> with a decorator.</p>
+</li><li>
+<p>As there is no instructions about discounts priority, I have set that
+2-for-1 discount take precedence over bulk discount. I could have created
+an scenerio using and applying both, but I find it more prudent doing in
+that way.</p>
+</li><li>
+<p>I thought in moving price calculations to <code>PricingLine</code>, but
+there is no gain and <code>PricingRule</code> would have lost funcionality.</p>
+</li></ul>
 
 <h2 id="label-Testing">Testing</h2>
 
@@ -176,7 +188,7 @@ Total: 74.50€
 </div></div>
 
       <div id="footer">
-  Generated on Wed Jan  9 17:31:54 2019 by
+  Generated on Wed Jan  9 20:01:09 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.16 (ruby-2.5.1).
 </div>
