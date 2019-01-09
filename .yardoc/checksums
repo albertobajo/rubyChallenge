@@ -1,4 +1,4 @@
-lib/cabify_store.rb 4ade1954415c0f03667b9ca40e43a5dd6ab534a7
+lib/cabify_store.rb f2491ba6184b214fdef23e27cee1141cca30536f
 lib/cabify_store/checkout.rb 92b28f21d3a3e557d99a2ece0b1b809b888cbc72
 lib/cabify_store/pricing_line.rb 9bc748e53f79660998e4ab35f41805bebce13dcd
 lib/cabify_store/pricing_rule.rb eca0420b00962f5e2bffdc7dac6650ddcfc86033
