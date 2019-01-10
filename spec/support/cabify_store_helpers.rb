@@ -1,7 +1,19 @@
 require 'cabify_store'
 
 module CabifyStoreHelpers
-  def create_pricing_rules
+  def pricing_rule
+    PricingRule.new(
+      code: "MUG",
+      name: "Cabify Voucher",
+      price: 7.50,
+      discount_two_for_one: false,
+      discount_bulk: false,
+      discount_bulk_minimum_quantity: nil,
+      discount_bulk_price: nil
+    )
+  end
+
+  def pricing_rules
     [
       PricingRule.new(
         code: "VOUCHER",

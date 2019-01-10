@@ -17,8 +17,14 @@ class Checkout
   # Adds an item to the correspond price line.
   #
   # @param code [String] Item code.
+  # @return [Boolean].
   def scan(code)
-    @pricing_lines[code].quantity += 1
+    if @pricing_lines[code]
+      @pricing_lines[code].quantity += 1
+      return true
+    else
+      return false
+    end
   end
 
   # Calculates the final price of the scanned items based in the initial pricing rules.

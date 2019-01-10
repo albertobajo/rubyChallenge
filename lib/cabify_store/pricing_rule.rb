@@ -43,17 +43,17 @@ class PricingRule
   # @param quantity [Integer]
   # @return [Float] the final price the line item based in the pricing rule
   def calculate(quantity)
-    raise TypeError unless price.is_a? Float
-    raise TypeError unless
-      discount_bulk_price.nil? or discount_bulk_price.is_a? Float
-
-    if discount_two_for_one
-      chargeable_items = (quantity.to_f / 2).ceil
-      chargeable_items * price
-    elsif discount_bulk and quantity >= discount_bulk_minimum_quantity
-      quantity * discount_bulk_price
+    if quantity >= 0
+      if discount_two_for_one
+        chargeable_items = (quantity.to_f / 2).ceil
+        chargeable_items * price
+      elsif discount_bulk and quantity >= discount_bulk_minimum_quantity
+        quantity * discount_bulk_price
+      else
+        quantity * price
+      end
     else
-      quantity * price
+      return 0.0
     end
   end
 end
