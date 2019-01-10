@@ -1,61 +1,51 @@
-require 'cabify_store/checkout'
-
 describe Checkout do
-  let(:pricing_rules) {
-    [
-      PricingRule.new(
-        code: "VOUCHER",
-        name: "Cabify Voucher",
-        price: 5.00,
-        discount_two_for_one: true,
-        discount_bulk: false,
-        discount_bulk_minimum_quantity: nil,
-        discount_bulk_price: nil
-      ),
-      PricingRule.new(
-        code: "TSHIRT",
-        name: "Cabify T-Shirt",
-        price: 20.00,
-        discount_two_for_one: false,
-        discount_bulk: true,
-        discount_bulk_minimum_quantity: 3,
-        discount_bulk_price: 19.00
-      ),
-      PricingRule.new(
-        code: "MUG",
-        name: "Cabify Coffee Mug",
-        price: 7.50,
-        discount_two_for_one: false,
-        discount_bulk: false,
-        discount_bulk_minimum_quantity: nil,
-        discount_bulk_price: nil
-      )
-    ]
-  }
+  # See spec/support/cabify_store_helpers.rb
+  subject { described_class.new(pricing_rules) }
 
-  before(:each) do
-    @co = Checkout.new(pricing_rules)
-  end
+  it { is_expected.to respond_to(:scan) }
+  it { is_expected.to respond_to(:total) }
 
-  it { expect(@co).to respond_to(:scan) }
-  it { expect(@co).to respond_to(:total) }
+  describe 'scan' do
+    let(:pricing_lines) { subject.instance_variable_get(:@pricing_lines) }
 
-  describe 'total' do
-    context 'there is no items scanned' do
-      it { expect(@co.total).to eq("0.00€") }
+    context 'code is valid' do
+      let(:code) { 'VOUCHER' }
+
+      it { expect(subject.scan(code)).to eq(true) }
+
+      it 'line item quantity is increased by 1' do
+        expect {
+          subject.scan code
+        }.to change{ pricing_lines[code].quantity }.by(1)
+      end
     end
 
-    context 'there is different items scanned in any order' do
-      it 'should apply the pricing rules' do
-        @co.scan('VOUCHER')
-        @co.scan('TSHIRT')
-        @co.scan('VOUCHER')
-        @co.scan('VOUCHER')
-        @co.scan('MUG')
-        @co.scan('TSHIRT')
-        @co.scan('TSHIRT')
+    context 'code is invalid' do
+      let(:code) { '' }
 
-        expect(@co.total).to eq("74.50€")
+      it { expect(subject.scan(code)).to eq(false) }
+
+      it 'there is not a new key at pricing_lines' do
+        subject.scan(code)
+        expect(pricing_lines.key?(code)).to eq(false)
+      end
+    end
+  end
+
+  describe 'total' do
+    context 'without scanned items' do
+      it { expect(subject.total).to eq('0.00€') }
+    end
+
+    context 'with scanned items' do
+      before do
+        subject.scan('VOUCHER') # 5.00€
+        subject.scan('MUG') # 7.50€
+        subject.scan('TSHIRT') # 20.00€
+      end
+
+      it 'returns the sum of each pricing line' do
+        expect(subject.total).to eq('32.50€')
       end
     end
   end

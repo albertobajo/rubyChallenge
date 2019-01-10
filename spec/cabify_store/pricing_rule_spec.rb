@@ -1,68 +1,76 @@
-require 'cabify_store/pricing_rule'
+require 'cabify_store'
 
 describe PricingRule do
-  let(:quantity) { 3 }
-  let(:discount_bulk_minimum_quantity) { 3 }
+  # See spec/support/cabify_store_helpers.rb
+  subject { pricing_rule }
 
-  before(:each) do
-    @rule = PricingRule.new(
-      code: "VOUCHER",
-      name: "Cabify Voucher",
-      price: 15.00,
-      discount_two_for_one: false,
-      discount_bulk: false,
-      discount_bulk_minimum_quantity: discount_bulk_minimum_quantity,
-      discount_bulk_price: 12.0
-    )
-  end
+  before { subject.price = 7.50 }
 
-  it { expect(@rule).to respond_to(:code) }
-  it { expect(@rule).to respond_to(:discount_bulk_minimum_quantity) }
-  it { expect(@rule).to respond_to(:discount_bulk_price) }
-  it { expect(@rule).to respond_to(:discount_bulk) }
-  it { expect(@rule).to respond_to(:discount_two_for_one) }
-  it { expect(@rule).to respond_to(:price) }
-  it { expect(@rule).to respond_to(:calculate) }
+  it { is_expected.to respond_to(:code) }
+  it { is_expected.to respond_to(:discount_bulk_minimum_quantity) }
+  it { is_expected.to respond_to(:discount_bulk_price) }
+  it { is_expected.to respond_to(:discount_bulk) }
+  it { is_expected.to respond_to(:discount_two_for_one) }
+  it { is_expected.to respond_to(:price) }
+  it { is_expected.to respond_to(:calculate) }
 
   describe 'calculate' do
-    subject { @rule.calculate(quantity) }
-
-    it 'should raise an error if price is not a float' do
-      @rule.price = 15
-
-      expect { subject }.to raise_error(TypeError)
+    context 'quantity is zero' do
+      it { expect(subject.calculate(0)).to eq(0.0) }
     end
 
-    it 'should raise an error if bulk price is not a float' do
-      @rule.discount_bulk_price = 15
-
-      expect { subject }.to raise_error(TypeError)
+    context 'quantity is negative' do
+      it { expect(subject.calculate(-1)).to eq(0.0) }
     end
 
-    it 'should calculate total price' do
-      expect(subject).to eq(45.00)
-    end
+    context 'quantity is positive' do
+      let(:quantity) { 2 }
 
-    it 'should calculate a 2-for-1 discount if applies' do
-      @rule.discount_two_for_one = true
-
-      expect(subject).to eq(30.00)
-    end
-
-    context 'there is a bulk discount' do
-      before do
-        @rule.discount_bulk = true
+      context 'without discount' do
+        it { expect(subject.calculate(quantity)).to eq(15.0) }
       end
 
-      it 'should apply a bulk discount' do
-        expect(subject).to eq(36.00)
-      end
+      context 'with discount' do
+        context '2-for-1' do
+          before { subject.discount_two_for_one = true }
+          it { expect(subject.calculate(quantity)).to eq(7.5) }
+        end
 
-      context 'quantity is less than minimum' do
-        let(:quantity) { discount_bulk_minimum_quantity - 1 }
+        context 'bulk' do
+          before do
+            subject.discount_bulk = true
+            subject.discount_bulk_minimum_quantity = 2
+            subject.discount_bulk_price = 5.00
+          end
 
-        it { expect(subject).to eq(30.00) }
+          context 'quantity is less than minimum' do
+            let(:quantity) { 1 }
+            it { expect(subject.calculate(quantity)).to eq(7.50) }
+          end
+
+          context 'quantity is equal to minimum' do
+            let(:quantity) { 2 }
+            it { expect(subject.calculate(quantity)).to eq(10.0) }
+          end
+
+          context 'quantity is greater than minimum' do
+            let(:quantity) { 3 }
+            it { expect(subject.calculate(quantity)).to eq(15.0) }
+          end
+        end
+
+        context 'both' do
+          it '2-for-1 takes precedence' do
+            subject.discount_two_for_one = true
+            subject.discount_bulk = true
+            subject.discount_bulk_minimum_quantity = 2
+            subject.discount_bulk_price = 5.00
+
+            expect(subject.calculate(2)).to eq(7.5)
+          end
+        end
       end
     end
   end
+  
 end

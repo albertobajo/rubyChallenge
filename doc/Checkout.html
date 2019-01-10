@@ -172,7 +172,7 @@ objects.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#scan-instance_method" title="#scan (instance method)">#<strong>scan</strong>(code)  &#x21d2; Object </a>
+      <a href="#scan-instance_method" title="#scan (instance method)">#<strong>scan</strong>(code)  &#x21d2; Boolean </a>
     
 
     
@@ -298,7 +298,7 @@ objects</p>
       <div class="method_details first">
   <h3 class="signature first" id="scan-instance_method">
   
-    #<strong>scan</strong>(code)  &#x21d2; <tt>Object</tt> 
+    #<strong>scan</strong>(code)  &#x21d2; <tt>Boolean</tt> 
   
 
   
@@ -334,6 +334,24 @@ objects</p>
   
 </ul>
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>.</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -341,15 +359,27 @@ objects</p>
       <pre class="lines">
 
 
-20
 21
-22</pre>
+22
+23
+24
+25
+26
+27
+28
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cabify_store/checkout.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'lib/cabify_store/checkout.rb', line 21</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_scan'>scan</span><span class='lparen'>(</span><span class='id identifier rubyid_code'>code</span><span class='rparen'>)</span>
-  <span class='ivar'>@pricing_lines</span><span class='lbracket'>[</span><span class='id identifier rubyid_code'>code</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_quantity'>quantity</span> <span class='op'>+=</span> <span class='int'>1</span>
+  <span class='kw'>if</span> <span class='ivar'>@pricing_lines</span><span class='lbracket'>[</span><span class='id identifier rubyid_code'>code</span><span class='rbracket'>]</span>
+    <span class='ivar'>@pricing_lines</span><span class='lbracket'>[</span><span class='id identifier rubyid_code'>code</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_quantity'>quantity</span> <span class='op'>+=</span> <span class='int'>1</span>
+
+    <span class='kw'>return</span> <span class='kw'>true</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='kw'>false</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -401,12 +431,12 @@ pricing rules.</p>
       <pre class="lines">
 
 
-27
-28
-29</pre>
+34
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/cabify_store/checkout.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'lib/cabify_store/checkout.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_total'>total</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%.2f€</span><span class='tstring_end'>&quot;</span></span> <span class='op'>%</span> <span class='ivar'>@pricing_lines</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_sum'>sum</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:total</span><span class='rparen'>)</span>
@@ -421,7 +451,7 @@ pricing rules.</p>
 </div>
 
       <div id="footer">
-  Generated on Tue Jan  8 14:37:27 2019 by
+  Generated on Thu Jan 10 12:50:12 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.16 (ruby-2.5.1).
 </div>

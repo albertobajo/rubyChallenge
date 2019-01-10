@@ -1,29 +1,16 @@
-require 'cabify_store/pricing_rule'
-require 'cabify_store/pricing_line'
-
 describe PricingLine do
+  # See spec/support/cabify_store_helpers.rb
+  let(:rule) { pricing_rule}
   let(:quantity) { 3 }
+  subject { described_class.new(pricing_rule, quantity) }
 
-  before(:each) do
-    @rule = PricingRule.new(
-      code: "VOUCHER",
-      name: "Cabify Voucher",
-      price: 15.00,
-      discount_two_for_one: false,
-      discount_bulk: false,
-      discount_bulk_minimum_quantity: nil,
-      discount_bulk_price: nil
-    )
-
-    @pricing_line = PricingLine.new(@rule, quantity)
-  end
-
-  it { expect(@pricing_line).to respond_to(:quantity) }
-  it { expect(@pricing_line).to respond_to(:total) }
+  it { is_expected.to respond_to(:quantity) }
+  it { is_expected.to respond_to(:total) }
 
   describe 'total' do
-    it 'should be equal to calculate call for given quantity' do
-      expect(@pricing_line.total).to eq(@pricing_line.calculate(quantity))
+    it 'invokes calculate with quantity' do
+      is_expected.to receive(:calculate).with(quantity).once
+      subject.total
     end
   end
 end
